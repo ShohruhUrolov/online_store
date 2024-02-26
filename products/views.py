@@ -26,6 +26,7 @@ def product_list(request):
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -38,7 +39,7 @@ def product_detail(request, pk):
         product = Product.objects.get(id=pk)
 
     except Product.DoesNotExist:
-        return Response({'detail': f'ID si {pk} ga teng product yo\'q'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'detail': f'ID si {pk} ga teng mahsulot yo\'q'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer = ProductSerializer(product)
@@ -64,4 +65,4 @@ def product_detail(request, pk):
 
     elif request.method == 'DELETE':
         product.delete()
-        return Response({'detail': f'ID si {pk} ga teng product o\'chirildi'}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'detail': f'ID si {pk} ga teng mahsulot o\'chirildi'}, status=status.HTTP_204_NO_CONTENT)

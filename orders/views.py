@@ -59,9 +59,28 @@ def order_list(request):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class OrderViewSet(ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
+@api_view(['GET', 'PUT', 'DELETE', 'PATCH'])
+def order_detail(request, order_id):
+
+    try:
+        order = Order.objects.get(id=order_id)
+
+    except Order.DoesNotExist:
+        return Response({'detail': 'Buyurtma topilmadi'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = OrderSerializer(order)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    elif request.method == 'PATCH':
+        serializer = OrderSerializer(order, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class OrderItemViewSet(ModelViewSet):
