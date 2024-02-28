@@ -1,7 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-
+db.sqlite3
 # C extensions
 *.so
 
@@ -46,7 +46,6 @@ coverage.xml
 
 # Developers
 *.sw*
-manage.py
 .DS_Store
 
 # example database
