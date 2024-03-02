@@ -1,16 +1,15 @@
-from django.shortcuts import render
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from .models import CartItem, Cart
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import CartItemSerializer, CartSerializer
 from products.models import Product
-from products.serializers import ProductSerializer
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 # Create your views here.
 
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated,])
 def cart_list(request):
 
     if request.method == 'GET':
@@ -29,6 +28,7 @@ def cart_list(request):
 
 
 @api_view(['GET', 'DELETE'])
+@permission_classes([IsAuthenticated, ])
 def cart_detail(request, pk):
     try:
         cart = Cart.objects.get(id=pk)
@@ -55,6 +55,7 @@ def add_initial_quantity(pk, quantity):
 
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated, ])
 def cart_items_list(request):
 
     if request.method == 'GET':
@@ -81,6 +82,7 @@ def cart_items_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated, ])
 def cart_item_detail(request, pk):
 
     try:

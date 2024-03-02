@@ -22,5 +22,6 @@ class CartSerializer(serializers.ModelSerializer):
     def get_cart_items(self, id):
         products = CartItem.objects.filter(cart=id)
         serializer = CartItemSerializer(products, many=True)
-        data = [{'id': product['id'], 'product': product['product'], 'quantity': product['quantity']} for product in serializer.data]
+        data = [{'id': product['id'], 'product': product['product'], 'quantity': product['quantity']} for product in
+                serializer.data]
         return data

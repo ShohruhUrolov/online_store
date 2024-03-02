@@ -1,5 +1,8 @@
-from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import (
+    api_view,
+    permission_classes,
+
+)
 from rest_framework.response import Response
 from rest_framework import status
 from .models import (
@@ -8,19 +11,22 @@ from .models import (
 from .serializers import (
     ProductSerializer
 )
-from category.serializers import CategorySerializer
-from category.models import Category
-
-
+from rest_framework.permissions import IsAuthenticated
+from .permissions import IsAuthorOrReadOnly, IsAdmin
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 # Create your views here.
 
-@api_view(['GET', 'POST'])
-def product_list(request):
 
+@api_view(['GET', 'POST'])
+# @permission_classes([IsAuthenticated, IsAdmin, ])
+def product_list(request):
     if request.method == 'GET':
-        products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        paginator = LimitOffsetPagination()
+        paginator.default_limit = 2
+        queryset = Product.objects.all()
+        paginated_queryset = paginator.paginate_queryset(queryset, request)
+        serializer = ProductSerializer(paginated_queryset, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
     elif request.method == 'POST':
         serializer = ProductSerializer(data=request.data)
@@ -33,6 +39,7 @@ def product_list(request):
 
 
 @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
+@permission_classes([IsAuthenticated, ])
 def product_detail(request, pk):
 
     try:

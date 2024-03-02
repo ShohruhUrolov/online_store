@@ -8,6 +8,7 @@ from products.serializers import ProductSerializer
 
 
 class Cart(models.Model):
+    DoesNotExist = None
     objects = None
     user = models.OneToOneField(
         User,
@@ -17,7 +18,7 @@ class Cart(models.Model):
     cart_items = models.ManyToManyField(Product, through='CartItem')
 
     def __str__(self):
-        return f"xaridorimiz: {self.user.username}ning savati uchun"
+        return f"{self.user}ning savati"
 
     class Meta:
         db_table = 'carts'
@@ -39,6 +40,7 @@ class CartItem(models.Model):
     class Meta:
         db_table = 'cart_items'
         unique_together = ['cart', 'product']
+
 
 
 

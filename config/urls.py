@@ -22,10 +22,12 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from django.views.generic import TemplateView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', TemplateView.as_view(template_name='home.html')),
     path('api/v1/api-auth/', include('rest_framework.urls')),
     path('api/v1/dj-rest-auth/', include('dj_rest_auth.urls')),
     path('api/v1/dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),

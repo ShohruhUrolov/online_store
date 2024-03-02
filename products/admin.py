@@ -10,9 +10,8 @@ from django.contrib.admin import ModelAdmin
 class ProductAdmin(ModelAdmin):
     model = Product
     list_display = [
-        'category', 'name', 'description', 'price', 'image'
+       'id', 'category', 'name', 'description', 'price', 'image', 'initial_quantity'
     ]
 
 
-admin.site.register(Category)
 admin.site.register(Product, ProductAdmin)

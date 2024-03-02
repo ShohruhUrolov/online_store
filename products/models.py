@@ -4,6 +4,7 @@ from category.models import Category
 
 
 class Product(models.Model):
+    DoesNotExist = None
     objects = None
     category = models.ForeignKey(
         Category,
@@ -16,6 +17,7 @@ class Product(models.Model):
     initial_quantity = models.PositiveIntegerField(default=0)
 
     class Meta:
+        ordering = ['id']
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
         db_table = 'products'

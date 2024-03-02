@@ -27,6 +27,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
+SITE_ID = 1
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -36,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # external modules
+    'django.contrib.sites',
     'rest_framework',
     'rest_framework.authtoken',
     'dj_rest_auth',
@@ -55,6 +57,8 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
@@ -62,6 +66,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny'
     ]
 }
+
 
 from datetime import timedelta
 
@@ -71,6 +76,10 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "TOKEN_OBTAIN_SERIALIZER": "users.serializers.MyTokenObtainPairSerializer",
+}
+
+REST_AUTH = {
+    'USE_JWT': True
 }
 
 MIDDLEWARE = [
@@ -89,7 +98,9 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'templates'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,6 +130,8 @@ DATABASES = {
     }
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -140,7 +153,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'uz'
 
 TIME_ZONE = 'Asia/Tashkent'
 
@@ -151,6 +164,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 import os
+
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
