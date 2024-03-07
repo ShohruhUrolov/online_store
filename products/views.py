@@ -18,7 +18,7 @@ from rest_framework.pagination import PageNumberPagination, LimitOffsetPaginatio
 
 
 @api_view(['GET', 'POST'])
-# @permission_classes([IsAuthenticated, IsAdmin, ])
+@permission_classes([IsAuthenticated, IsAdmin, ])
 def product_list(request):
     if request.method == 'GET':
         paginator = LimitOffsetPagination()
@@ -39,7 +39,7 @@ def product_list(request):
 
 
 @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
-@permission_classes([IsAuthenticated, ])
+@permission_classes([IsAuthenticated, IsAdmin, ])
 def product_detail(request, pk):
 
     try:

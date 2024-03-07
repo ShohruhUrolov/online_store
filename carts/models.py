@@ -18,10 +18,11 @@ class Cart(models.Model):
     cart_items = models.ManyToManyField(Product, through='CartItem')
 
     def __str__(self):
-        return f"{self.user}ning savati"
+        return f"{self.user}ning savati uchun"
 
     class Meta:
         db_table = 'carts'
+        ordering = ['id']
 
 
 class CartItem(models.Model):
@@ -40,6 +41,7 @@ class CartItem(models.Model):
     class Meta:
         db_table = 'cart_items'
         unique_together = ['cart', 'product']
+        ordering = ['id']
 
 
 

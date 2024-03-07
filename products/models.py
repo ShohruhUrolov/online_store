@@ -17,7 +17,7 @@ class Product(models.Model):
     initial_quantity = models.PositiveIntegerField(default=0)
 
     class Meta:
-        ordering = ['id']
+        ordering = ['name']
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
         db_table = 'products'
