@@ -19,19 +19,19 @@ from django.contrib.auth.models import User
 
 
 @extend_schema(
-    methods='POST',
+    methods=['POST'],
     parameters=[
         OpenApiParameter(
             "status",
-            type={"type": "str"}, style="form", explode=False,
+            type={"type": "str"}, style="form", required=True,
         ),
         OpenApiParameter(
             "user id",
-            type={"type": "int"}, style="form", explode=False,
+            type={"type": "int"}, style="form", required=True,
         ),
         OpenApiParameter(
             "address",
-            type={"type": "str"}, style="form", explode=False,
+            type={"type": "str"}, style="form", required=True,
         )
     ])
 @api_view(['POST', 'GET'])

@@ -1,3 +1,4 @@
+from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema
 
 from .models import CartItem, Cart
@@ -12,11 +13,11 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 # Create your views here.
 
 @extend_schema(
-    methods='POST',
+    methods=['POST'],
     parameters=[
         OpenApiParameter(
             "user id",
-            type={"type": "int"}, style="form", explode=False,
+            type={"type": "int"}, style="form", required=True,
         )
     ])
 @api_view(['GET', 'POST'])
@@ -64,22 +65,22 @@ def add_initial_quantity(pk, quantity):
     product.save()
 
 
+
 @extend_schema(
-    methods='POST',
+    methods=['POST'],
     parameters=[
-        OpenApiParameter(
-            "cart id",
-            type={"type": "int"}, style="form", explode=False,
-        ),
+        OpenApiParameter(name='card id', required=True, type=int),
         OpenApiParameter(
             "product name",
-            type={"type": "string"}, style="form", explode=False,
+            type={"type": "string"}, style="form", required=True,
         ),
         OpenApiParameter(
             "product quantity",
-            type={"type": "int"}, style="form", explode=False,
-        )
-    ])
+            type={"type": "int"}, style="form", required=True,
+        ),
+
+    ]
+)
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated, ])
 def cart_items_list(request):

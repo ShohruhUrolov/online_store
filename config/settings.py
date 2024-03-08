@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-8-$t1+i9l$=q13nsnqs&9%ikk7!@trlp&kudhhd!f#wubgw=e#
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+CSRF_TRUSTED_ORIGINS = ['https://online-store-yz5u.onrender.com', 'https://127.0.0.1:8000', 'https://0.0.0.0:8000']
 # Application definition
 SITE_ID = 1
 

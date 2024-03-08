@@ -17,31 +17,31 @@ from .serializers import ProductSerializer
 
 
 @extend_schema(
-    methods='POST',
+    methods=['POST'],
         parameters=[
             OpenApiParameter(
                 "product category",
-                type={"type": "STR"}, style="form", explode=False,
+                type={"type": "STR"}, style="form", required=True,
             ),
             OpenApiParameter(
                 "product name",
-                type={"type": "string"}, style="form", explode=False,
+                type={"type": "string"}, style="form", required=True,
             ),
             OpenApiParameter(
                 "product desc",
-                type={"type": "string"}, style="form", explode=False,
+                type={"type": "string"}, style="form", required=True,
             ),
             OpenApiParameter(
                 "product price",
-                type={"type": "int"}, style="form", explode=False,
+                type={"type": "int"}, style="form", required=True,
             ),
             OpenApiParameter(
                 "product initial_quantity",
-                type={"type": "int"}, style="form", explode=False,
+                type={"type": "int"}, style="form", required=True,
             ),
             OpenApiParameter(
                 "product image",
-                type={"type": "file"}, style="form", explode=False,
+                type={"type": "file"}, style="form", required=True,
             )
        ])
 @api_view(['GET', 'POST'])
