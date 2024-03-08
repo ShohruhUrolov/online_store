@@ -126,16 +126,19 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+import dj_database_url
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'online_store',
-        'USER': 'shop_admin',
-        'PASSWORD': '123456',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.parse('postgres://shop_admin:GPQXQrXjoYjYJxxHE7h8mEr7FFBjTLhA@dpg-cnlatn7109ks73c1bcu0-a.oregon-postgres.render.com/online_store_9yky')
+        # {
+        # 'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'online_store',
+        # 'USER': 'shop_admin',
+        # 'PASSWORD': '123456',
+        # 'HOST': '127.0.0.1',
+        # 'PORT': '5432',
+        # dj_database_url.
+
+    # }
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
