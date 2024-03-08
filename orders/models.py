@@ -7,12 +7,6 @@ from products.models import Product
 
 
 class Order(models.Model):
-    objects = None
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    address = models.CharField(max_length=150, default='Tashkent shahar, yunusobod')
-    order_items = models.ManyToManyField(Product, through='OrderItem')
-    create_at = models.DateTimeField(auto_now_add=True)
-    update_at = models.DateTimeField(auto_now=True)
     status = models.CharField(
         max_length=8,
         choices=[
@@ -23,16 +17,23 @@ class Order(models.Model):
         default='pending'
     )
 
+    objects = None
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    address = models.CharField(max_length=150, default='Tashkent shahar, chilanzor 21 daha')
+    order_items = models.ManyToManyField(Product, through='OrderItem')
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+
     def __str__(self):
-        return str(self.user)
+        return str(self.customer)
 
     class Meta:
         db_table = 'orders'
 
 
 class OrderItem(models.Model):
-    objects = None
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    objects = None
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.CharField(max_length=50)
 

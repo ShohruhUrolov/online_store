@@ -10,11 +10,12 @@ from .serialezers import (
 )
 from carts.models import Cart, CartItem
 from products.models import Product
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
 # Create your views here.
+
 
 
 @api_view(['POST', 'GET'])
@@ -81,6 +82,22 @@ def order_detail(request, order_id):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['POST'])
+def order_received(request, order_id):
+
+    try:
+        order = Order.objects.get(id=order_id)
+
+    except Order.DoesNotExist:
+        return Response({'detail': 'Bunday buyurtma yo\'q'}, status=status.HTTP_404_NOT_FOUND)
+
+    if order.status == 'pending':
+        order.status = 'accepted'
+        order.save()
+        return Response({'detail': 'Buyurtma customerga yetkazildi'}, status=status.HTTP_200_OK)
+
+    return Response({'detail': 'Buyurtma allaqachon yetkazilgan yoki bekor qilingan'})
 
 
 class OrderItemViewSet(ModelViewSet):

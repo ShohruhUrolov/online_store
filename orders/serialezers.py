@@ -6,6 +6,7 @@ from .models import (
 from products.models import Product
 from products.serializers import ProductSerializer
 
+
 class OrderItemSerializer(serializers.ModelSerializer):
     product = serializers.SerializerMethodField('get_product')
 
@@ -18,14 +19,14 @@ class OrderItemSerializer(serializers.ModelSerializer):
         serializer = ProductSerializer(product)
         return serializer.data['name']
 
-# // name, age
-# // query="select name , age from users where id is null"
+
 class OrderSerializer(serializers.ModelSerializer):
     order_items = serializers.SerializerMethodField('get_order_items')
 
     class Meta:
         model = Order
-        fields = ['id', 'user', 'address', 'status', 'order_items']
+        fields = ['id', 'customer', 'address', 'status', 'order_items']
+
 
     def get_order_items(self, order):
         products = OrderItem.objects.filter(order=order)

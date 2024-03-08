@@ -6,10 +6,12 @@ from category.models import Category
 class Product(models.Model):
     DoesNotExist = None
     objects = None
+
     category = models.ForeignKey(
         Category,
         models.CASCADE
     )
+
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=160)
     price = models.PositiveIntegerField(default=0)
