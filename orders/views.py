@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework.viewsets import ModelViewSet
 from .models import (
     Order,
@@ -17,13 +18,32 @@ from django.contrib.auth.models import User
 # Create your views here.
 
 
-
+@extend_schema(
+    methods='POST',
+    parameters=[
+        OpenApiParameter(
+            "status",
+            type={"type": "str"}, style="form", explode=False,
+        ),
+        OpenApiParameter(
+            "user id",
+            type={"type": "int"}, style="form", explode=False,
+        ),
+        OpenApiParameter(
+            "address",
+            type={"type": "str"}, style="form", explode=False,
+        )
+    ])
 @api_view(['POST', 'GET'])
 def order_list(request):
 
     if request.method == 'POST':
         user_id = request.data['user']
-        user = User.objects.get(id=user_id)
+        try:
+            user = User.objects.get(id=user_id)
+
+        except User.DoesNotExist:
+            return Response({'detail': 'user mavjud emas'}, status=status.HTTP_404_NOT_FOUND)
         try:
             cart = Cart.objects.get(user=user)
 

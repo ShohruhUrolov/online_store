@@ -5,7 +5,7 @@ from products.serializers import ProductSerializer
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    products = serializers.SerializerMethodField()
+    products = serializers.SerializerMethodField('get_products')
 
     class Meta:
         model = Category

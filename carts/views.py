@@ -1,3 +1,5 @@
+from drf_spectacular.utils import OpenApiParameter, extend_schema
+
 from .models import CartItem, Cart
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -5,13 +7,21 @@ from rest_framework import status
 from .serializers import CartItemSerializer, CartSerializer
 from products.models import Product
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+
+
 # Create your views here.
 
-
+@extend_schema(
+    methods='POST',
+    parameters=[
+        OpenApiParameter(
+            "user id",
+            type={"type": "int"}, style="form", explode=False,
+        )
+    ])
 @api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated,])
+@permission_classes([IsAuthenticated, ])
 def cart_list(request):
-
     if request.method == 'GET':
         carts = Cart.objects.all()
         serializer = CartSerializer(carts, many=True)
@@ -54,10 +64,25 @@ def add_initial_quantity(pk, quantity):
     product.save()
 
 
+@extend_schema(
+    methods='POST',
+    parameters=[
+        OpenApiParameter(
+            "cart id",
+            type={"type": "int"}, style="form", explode=False,
+        ),
+        OpenApiParameter(
+            "product name",
+            type={"type": "string"}, style="form", explode=False,
+        ),
+        OpenApiParameter(
+            "product quantity",
+            type={"type": "int"}, style="form", explode=False,
+        )
+    ])
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated, ])
 def cart_items_list(request):
-
     if request.method == 'GET':
         cart_items = CartItem.objects.all()
         serializer = CartItemSerializer(cart_items, many=True)
@@ -76,7 +101,8 @@ def cart_items_list(request):
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
-                return Response({'detail': f'Ogohlantirish, do\'konda {product.name}ning qolgan miqdori {product.initial_quantity} ga teng'})
+                return Response({
+                                    'detail': f'Ogohlantirish, do\'konda {product.name}ning qolgan miqdori {product.initial_quantity} ga teng'})
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -84,7 +110,6 @@ def cart_items_list(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated, ])
 def cart_item_detail(request, pk):
-
     try:
         cart_item = CartItem.objects.get(id=pk)
 
@@ -109,4 +134,5 @@ def cart_item_detail(request, pk):
         serializer = CartItemSerializer(cart_item)
         add_initial_quantity(serializer.data['product'], serializer.data['quantity'])
         cart_item.delete()
-        return Response({'detail': f'ID si {pk} ga teng bo\'lgan cart_item o\'chirildi'}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'detail': f'ID si {pk} ga teng bo\'lgan cart_item o\'chirildi'},
+                        status=status.HTTP_204_NO_CONTENT)
