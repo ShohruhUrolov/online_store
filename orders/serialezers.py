@@ -25,14 +25,10 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'customer', 'address', 'status', 'order_items']
-
+        fields = ['id', 'user', 'address', 'status', 'order_items']
 
     def get_order_items(self, order):
         products = OrderItem.objects.filter(order=order)
         serializer = OrderItemSerializer(products, many=True)
 
         return serializer.data
-
-
-

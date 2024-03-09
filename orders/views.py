@@ -115,7 +115,7 @@ def order_received(request, order_id):
     if order.status == 'pending':
         order.status = 'accepted'
         order.save()
-        return Response({'detail': 'Buyurtma customerga yetkazildi'}, status=status.HTTP_200_OK)
+        return Response({'detail': 'Buyurtma mijozga yetkazildi'}, status=status.HTTP_200_OK)
 
     return Response({'detail': 'Buyurtma allaqachon yetkazilgan yoki bekor qilingan'})
 
